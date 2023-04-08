@@ -58,7 +58,7 @@ create table grades (
     assig2 char,
     endsem char,
 	finalGrade char,	
-	foreign key(studID) references student(studID) on delete cascade,, 
+	foreign key(studID) references student(studID) on delete cascade, 
 	foreign key(courseID) references course(courseID) on delete cascade, 
     foreign key(teacID) references teacher(teacID) on delete cascade,
 	primary key(studID,courseID,teacID)
@@ -95,9 +95,9 @@ NOT DETERMINISTIC
 SQL SECURITY INVOKER
 COMMENT 'Input - Student ID and entered password, Output -  Verification of the password'
 BEGIN
+	DECLARE temppwd varchar(30);
+	DECLARE tname varchar(30);
 	IF(tstudID in (select studID from student)) THEN
-		DECLARE temppwd varchar(30);
-		DECLARE tname varchar(30);
 		SELECT sysPwd INTO temppwd FROM student WHERE studID = tstudID;
 		SELECT studName INTO tname FROM student WHERE studID = tstudID;
 		IF temppwd = pwd THEN
@@ -120,9 +120,9 @@ NOT DETERMINISTIC
 SQL SECURITY INVOKER
 COMMENT 'Input - Student ID and Course ID, Output - Verification of the password'
 BEGIN
+	DECLARE temppwd varchar(30);
+	DECLARE tname varchar(30);
 	IF(tteachID in (select teachID from teacher)) THEN 
-		DECLARE temppwd varchar(30);
-		DECLARE tname varchar(30);
 		SELECT sysPwd INTO temppwd FROM teacher WHERE teacID = tteacID;
 		SELECT teacName INTO tname FROM teacher WHERE teacID = tteacID;
 		IF temppwd = pwd THEN
@@ -196,10 +196,12 @@ COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
 		SELECT 'Student is not taking this course';
-	ELSE IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
-		SELECT 'Teacher is not teaching this course';
-	ELSE
-		UPDATE grades SET assig1 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+	ELSE 
+		IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
+			SELECT 'Teacher is not teaching this course';
+		ELSE
+			UPDATE grades SET assig1 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID; 
+		END IF; 
 	END IF;
 END$$ 
 
@@ -213,11 +215,13 @@ COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
 		SELECT 'Student is not taking this course';
-	ELSE IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
-		SELECT 'Teacher is not teaching this course';
-	ELSE
-		UPDATE grades SET assig2 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
-	END IF;
+	ELSE 
+		IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
+			SELECT 'Teacher is not teaching this course';
+		ELSE
+			UPDATE grades SET assig2 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+		END IF; 
+	END IF; 
 END$$ 
 
 
@@ -230,11 +234,13 @@ COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
 		SELECT 'Student is not taking this course';
-	ELSE IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
-		SELECT 'Teacher is not teaching this course';
-	ELSE
-		UPDATE grades SET midsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
-	END IF;
+	ELSE 
+		IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
+			SELECT 'Teacher is not teaching this course';
+		ELSE
+			UPDATE grades SET midsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+		END IF;
+	END IF; 
 END$$
 
 
@@ -247,11 +253,13 @@ COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
 		SELECT 'Student is not taking this course';
-	ELSE IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
-		SELECT 'Teacher is not teaching this course';
-	ELSE
-		UPDATE grades SET endsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
-	END IF;
+	ELSE 
+		IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
+			SELECT 'Teacher is not teaching this course';
+		ELSE
+			UPDATE grades SET endsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+		END IF; 
+	END IF; 
 END$$
 
 
@@ -264,11 +272,13 @@ COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
 		SELECT 'Student is not taking this course';
-	ELSE IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
-		SELECT 'Teacher is not teaching this course';
-	ELSE
-		UPDATE grades SET finalGrade = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
-	END IF;
+	ELSE 
+		IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN 
+			SELECT 'Teacher is not teaching this course';
+		ELSE
+			UPDATE grades SET finalGrade = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+		END IF; 
+	END IF; 
 END$$ 
 
 
@@ -289,12 +299,14 @@ BEGIN
 	ELSE
 		IF (strcmp(tmidsem, endsem) = 1) THEN
 			SELECT 'Student is doing well in the course Final grade has improved'; 
-		ELSE IF(strcmp(tmidsem, endsem) = 0) THEN 
-			SELECT 'Student has not made any progress in the course. Final and Midsem grades are the same'; 
 		ELSE 
-			SELECT 'Student is not doing well in the course Final grade has decreased'; 
-		END IF;
-	END IF;
+			IF(strcmp(tmidsem, endsem) = 0) THEN 
+				SELECT 'Student has not made any progress in the course. Final and Midsem grades are the same'; 
+			ELSE 
+				SELECT 'Student is not doing well in the course Final grade has decreased'; 
+			END IF;
+		END IF; 
+	END IF; 
 END$$
 
 
@@ -329,7 +341,7 @@ END$$
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `NewStudent`(IN tstudID int, IN tname varchar(30), IN tpwd varchar(30))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateStud`(IN tstudID int, IN tname varchar(30), IN tpwd varchar(30))
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
@@ -378,7 +390,7 @@ END$$
 
 
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `ListStudent`(IN tcourseID int, IN tteachID int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `LowestGrade`(IN tcourseID int, IN tteachID int)
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
