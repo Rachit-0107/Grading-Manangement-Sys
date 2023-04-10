@@ -120,7 +120,7 @@ VALUES
 	(3113,351,101,'A','C','A',null,null),
 	(3111,211,102,'A','A','A','A','A'),
 	(3111,381,103,'B','A',null,'A',null),
-	(3110,351,101,'A','A','A','A','D'),
+	(3110,351,101,'A','A','A','B','A'),
 	(3110,342,103,'A','A',null,'A','A'),
 	(3107,212,101,'B','A','B','A','A'),
 	(3107,372,102,'C',null,'A','A','A'),
@@ -164,12 +164,12 @@ BEGIN
 		SELECT sysPwd INTO temppwd FROM student WHERE studID = tstudID;
 		SELECT studName INTO tname FROM student WHERE studID = tstudID;
 		IF temppwd = pwd THEN
-			SELECT 'Welcome ', tname;
+			SELECT "Welcome ", tname;
 		ELSE
-			SELECT 'Incorrect Password';
+			SELECT "Incorrect Password";
 		END IF; 
 	ELSE 
-		SELECT 'Student ID does not exist';
+		SELECT "Student ID does not exist";
 	END IF;
 	
 END$$ 
@@ -181,7 +181,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `verifyTPass`(IN tteacID int, IN pwd
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID and Course ID, Output - Verification of the password'
+COMMENT "Input - Student ID and Course ID, Output - Verification of the password"
 BEGIN
 	DECLARE temppwd varchar(30);
 	DECLARE tname varchar(30);
@@ -189,12 +189,12 @@ BEGIN
 		SELECT sysPwd INTO temppwd FROM teacher WHERE teacID = tteacID;
 		SELECT teacName INTO tname FROM teacher WHERE teacID = tteacID;
 		IF temppwd = pwd THEN
-			SELECT 'Welcome ', tname;
+			SELECT "Welcome ", tname;
 		ELSE
-			SELECT 'Incorrect Password';
+			SELECT "Incorrect Password";
 		END IF;
 	ELSE 
-		SELECT 'Teacher ID does not exist';
+		SELECT "Teacher ID does not exist";
 	END IF;
 
 END$$ 
@@ -206,10 +206,10 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `viewTGrades`(IN tcourseID int, IN t
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input -Course ID and Teacher ID, Output - Grades of all students in the particular course taught by the teacher'
+COMMENT "Input -Course ID and Teacher ID, Output - Grades of all students in the particular course taught by the teacher"
 BEGIN
 	IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN
-		SELECT 'Teacher is not teaching this course';
+		SELECT "Teacher is not teaching this course";
 	ELSE
 		SELECT student.studName as 'Student', grades.assig1 as 'Assignment-1', grades.midsem as 'Midsem', grades.assig2 as 'Assignment-2', grades.endsem as 'Endsem' 
 			FROM grades, student 
@@ -224,11 +224,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSGrades`(IN tstudID int, IN tco
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID and Course ID, Output - Grades for the course'
+COMMENT "Input - Student ID and Course ID, Output - Grades for the course"
 BEGIN
 
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE
 		SELECT grades.assig1 as 'Assignment-1', grades.midsem as 'Midsem', grades.assig2 as 'Assignment-2', grades.endsem as 'Endsem'  
 			FROM grades 
@@ -242,7 +242,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `viewStudPerf`(IN tstudID int)
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID, Output - Grades of all courses taken by the student'
+COMMENT "Input - Student ID, Output - Grades of all courses taken by the student"
 BEGIN
 	SELECT course.courseName as 'Course Name', grades.assig1 as 'Assignment-1', grades.midsem as 'Midsem', grades.assig2 as 'Assignment-2', grades.endsem as 'Endsem'  
 		FROM grades, course 
@@ -255,13 +255,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addGradeAS1`(IN tcourseID int, IN t
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
+COMMENT "Input - Student ID Course ID and Grade of specify component, Output -"
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE 
 		IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN 
-			SELECT 'Teacher is not teaching this course';
+			SELECT "Teacher is not teaching this course";
 		ELSE
 			UPDATE grades SET assig1 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID; 
             SELECT "Grade Updated";
@@ -275,13 +275,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addGradeAS2`(IN tcourseID int, IN t
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
+COMMENT "Input - Student ID Course ID and Grade of specify component, Output -"
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE 
 		IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN 
-			SELECT 'Teacher is not teaching this course';
+			SELECT "Teacher is not teaching this course";
 		ELSE
 			UPDATE grades SET assig2 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
             SELECT "Grade Updated";
@@ -295,13 +295,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addGradeMS`(IN tcourseID int, IN ts
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
+COMMENT "Input - Student ID Course ID and Grade of specify component, Output -"
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE 
 		IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN 
-			SELECT 'Teacher is not teaching this course';
+			SELECT "Teacher is not teaching this course";
 		ELSE
 			UPDATE grades SET midsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
             SELECT "Grade Updated";
@@ -315,13 +315,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addGradeES`(IN tcourseID int, IN ts
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
+COMMENT "Input - Student ID Course ID and Grade of specify component, Output -"
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE 
 		IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN 
-			SELECT 'Teacher is not teaching this course';
+			SELECT "Teacher is not teaching this course";
 		ELSE
 			UPDATE grades SET endsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
             SELECT "Grade Updated";
@@ -335,13 +335,13 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `addGradeFG`(IN tcourseID int, IN ts
 READS SQL DATA
 NOT DETERMINISTIC
 SQL SECURITY INVOKER
-COMMENT 'Input - Student ID Course ID and Grade of specify component, Output -'
+COMMENT "Input - Student ID Course ID and Grade of specify component, Output -"
 BEGIN
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE 
 		IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN 
-			SELECT 'Teacher is not teaching this course';
+			SELECT "Teacher is not teaching this course";
 		ELSE
 			UPDATE grades SET finalGrade = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
             SELECT "Grade Updated";
@@ -389,7 +389,7 @@ BEGIN
 	IF((SELECT COUNT(*) FROM student WHERE studID = tstudID) = 0) THEN
 		INSERT INTO student VALUES (tstudID, tname, tpwd);
 	ELSE
-		SELECT 'StudentID already exists';
+		SELECT "StudentID already exists";
 	END IF;
 END$$ 
 
@@ -404,7 +404,7 @@ BEGIN
 	IF((SELECT COUNT(*) FROM teacher WHERE teacID = tteacID) = 0) THEN
 		INSERT INTO teacher VALUES (tteacID, tname, tpwd);
 	ELSE
-		SELECT 'TeacherID already exists';
+		SELECT "TeacherID already exists";
 	END IF;
 END$$ 
 
@@ -417,7 +417,7 @@ SQL SECURITY INVOKER
 COMMENT 'Input - New Student Details, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM student WHERE studID = tstudID) = 0) THEN
-		SELECT 'Student doesnt exist';
+		SELECT "Student doesnt exist";
 	ELSE
 		UPDATE student SET studName = tname, sysPwd = tpwd WHERE studID = tstudID;
 	END IF;
@@ -433,7 +433,7 @@ SQL SECURITY INVOKER
 COMMENT 'Input -Teacher ID, Output -'
 BEGIN
 	IF((SELECT COUNT(*) FROM teacher WHERE teacID = tteacID) = 0) THEN
-		SELECT 'Teacher doesnt exist';
+		SELECT "Teacher doesnt exist";
 	ELSE
 		DELETE FROM teacher WHERE teacID = tteacID;
 	END IF;
@@ -449,7 +449,7 @@ SQL SECURITY INVOKER
 COMMENT 'Input - Course ID and Grade , Output - List of Students with a grade better than the input grade'
 BEGIN
 	IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN
-		SELECT 'Teacher is not teaching this course';
+		SELECT "Teacher is not teaching this course";
 	ELSE
 		SELECT count(studID) 
 		FROM grades 
@@ -466,7 +466,7 @@ SQL SECURITY INVOKER
 COMMENT 'Input - Course ID , Output - Lowest grade of the course'
 BEGIN
 	IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN
-		SELECT 'Teacher is not teaching this course';
+		SELECT "Teacher is not teaching this course";
 	ELSE
 		SELECT max(finalGrade) as "Lowest Grade"
 		FROM grades 
