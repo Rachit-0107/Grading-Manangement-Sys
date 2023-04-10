@@ -159,12 +159,10 @@ SQL SECURITY INVOKER
 COMMENT 'Input - Student ID and entered password, Output -  Verification of the password'
 BEGIN
 	DECLARE temppwd varchar(30);
-	DECLARE tname varchar(30);
 	IF(tstudID in (select studID from student)) THEN
 		SELECT sysPwd INTO temppwd FROM student WHERE studID = tstudID;
-		SELECT studName INTO tname FROM student WHERE studID = tstudID;
 		IF temppwd = pwd THEN
-			SELECT "Welcome ", tname;
+			SELECT "Welcome";
 		ELSE
 			SELECT "Incorrect Password";
 		END IF; 
@@ -184,12 +182,10 @@ SQL SECURITY INVOKER
 COMMENT "Input - Student ID and Course ID, Output - Verification of the password"
 BEGIN
 	DECLARE temppwd varchar(30);
-	DECLARE tname varchar(30);
 	IF(tteachID in (select teachID from teacher)) THEN 
 		SELECT sysPwd INTO temppwd FROM teacher WHERE teacID = tteacID;
-		SELECT teacName INTO tname FROM teacher WHERE teacID = tteacID;
 		IF temppwd = pwd THEN
-			SELECT "Welcome ", tname;
+			SELECT "Welcome";
 		ELSE
 			SELECT "Incorrect Password";
 		END IF;
@@ -472,4 +468,4 @@ BEGIN
 		FROM grades 
 		where courseID = tcourseID AND teacID = tteachID;
 	END IF;
-END$$ 
+END$$
