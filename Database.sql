@@ -112,20 +112,20 @@ INSERT INTO
 	grades(studID, courseID, teacID, assig1, midsem, assig2, endsem, finalGrade)
 VALUES 
 	(3102,212,101,'A','A','A','A','A'),
-	(3102,372,102,'A','A','A','A','B'),
-	(3104,212,101,'A','A','A','A','B'),
-	(3104,211,102,'A','A','A','A','A'),
-	(3112,372,102,'A','A','A','A','C'),
-	(3112,381,103,'A','A','A','A','C'),
-	(3113,351,101,'A','A','A','A','A'),
+	(3102,372,102,'A',null,'A',null,null),
+	(3104,212,101,'B',null,'A','B',null),
+	(3104,211,102,'A','B','B','B','B'),
+	(3112,372,102,'A','A','B','A','A'),
+	(3112,381,103,'C',null,'A','A',null),
+	(3113,351,101,'A','C','A',null,null),
 	(3111,211,102,'A','A','A','A','A'),
-	(3111,381,103,'A','A','A','A','D'),
+	(3111,381,103,'B','A',null,'A',null),
 	(3110,351,101,'A','A','A','A','D'),
-	(3110,342,103,'A','A','A','A','E'),
-	(3107,212,101,'A','A','A','A','B'),
-	(3107,372,102,'A','A','A','A','A'),
-	(3107,342,103,'A','A','A','A','C'),
-	(3111,342,103,'A','A','A','A','B');
+	(3110,342,103,'A','A',null,'A','A'),
+	(3107,212,101,'B','A','B','A','A'),
+	(3107,372,102,'C',null,'A','A','A'),
+	(3107,342,103,'B','B','B',null,null),
+	(3111,342,103,'A','A',null,'B','B');
 
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `viewSCourses`(IN tstudID int)
@@ -358,15 +358,15 @@ BEGIN
 	SELECT finalGrade INTO final FROM grades WHERE studID = tstudID AND courseID = tcourseID; 
 
 	IF((SELECT COUNT(*) FROM courseTaken WHERE courseID = tcourseID AND studID = tstudID) = 0) THEN
-		SELECT 'Student is not taking this course';
+		SELECT "Student is not taking this course";
 	ELSE
-		IF (strcmp(tmidsem, endsem) = 1) THEN
-			SELECT 'Student is doing well in the course Final grade has improved'; 
+		IF (strcmp(tmidsem, final) = 1) THEN
+			SELECT "Student is doing well in the course Final grade has improved"; 
 		ELSE 
-			IF(strcmp(tmidsem, endsem) = 0) THEN 
-				SELECT 'Student has not made any progress in the course. Final and Midsem grades are the same'; 
+			IF(strcmp(tmidsem, final) = 0) THEN 
+				SELECT "Student has not made any progress in the course. Final and Midsem grades are the same"; 
 			ELSE 
-				SELECT 'Student is not doing well in the course Final grade has decreased'; 
+				SELECT "Student is not doing well in the course Final grade has decreased"; 
 			END IF;
 		END IF; 
 	END IF; 
@@ -413,7 +413,7 @@ BEGIN
 	IF((SELECT COUNT(*) FROM student WHERE studID = tstudID) = 0) THEN
 		SELECT 'Student doesnt exist';
 	ELSE
-		UPDATE student SET studName = tname, studPwd = tpwd WHERE studID = tstudID;
+		UPDATE student SET studName = tname, sysPwd = tpwd WHERE studID = tstudID;
 	END IF;
 END$$ 
 
@@ -442,7 +442,7 @@ NOT DETERMINISTIC
 SQL SECURITY INVOKER
 COMMENT 'Input - Course ID and Grade , Output - List of Students with a grade better than the input grade'
 BEGIN
-	IF((SELECT COUNT(*) FROM courseTaught WHERE courseID = tcourseID AND teacID = tteachID) = 0) THEN
+	IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN
 		SELECT 'Teacher is not teaching this course';
 	ELSE
 		SELECT count(studID) 
@@ -462,8 +462,8 @@ BEGIN
 	IF((SELECT COUNT(*) FROM course WHERE courseID = tcourseID AND taughtBy = tteachID) = 0) THEN
 		SELECT 'Teacher is not teaching this course';
 	ELSE
-		SELECT max(finalGrade) 
+		SELECT max(finalGrade) as "Lowest Grade"
 		FROM grades 
 		where courseID = tcourseID AND teacID = tteachID;
 	END IF;
-END$$
+END$$ 
