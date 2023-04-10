@@ -264,6 +264,7 @@ BEGIN
 			SELECT 'Teacher is not teaching this course';
 		ELSE
 			UPDATE grades SET assig1 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID; 
+            SELECT "Grade Updated";
 		END IF; 
 	END IF;
 END$$ 
@@ -283,6 +284,7 @@ BEGIN
 			SELECT 'Teacher is not teaching this course';
 		ELSE
 			UPDATE grades SET assig2 = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+            SELECT "Grade Updated";
 		END IF; 
 	END IF; 
 END$$ 
@@ -302,6 +304,7 @@ BEGIN
 			SELECT 'Teacher is not teaching this course';
 		ELSE
 			UPDATE grades SET midsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+            SELECT "Grade Updated";
 		END IF;
 	END IF; 
 END$$
@@ -321,6 +324,7 @@ BEGIN
 			SELECT 'Teacher is not teaching this course';
 		ELSE
 			UPDATE grades SET endsem = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+            SELECT "Grade Updated";
 		END IF; 
 	END IF; 
 END$$
@@ -340,6 +344,7 @@ BEGIN
 			SELECT 'Teacher is not teaching this course';
 		ELSE
 			UPDATE grades SET finalGrade = tgrade WHERE courseID = tcourseID AND studID = tstudID AND teacID = tteachID;
+            SELECT "Grade Updated";
 		END IF; 
 	END IF; 
 END$$ 
@@ -367,6 +372,7 @@ BEGIN
 				SELECT "Student has not made any progress in the course. Final and Midsem grades are the same"; 
 			ELSE 
 				SELECT "Student is not doing well in the course Final grade has decreased"; 
+                SELECT "Grade Updated";
 			END IF;
 		END IF; 
 	END IF; 
