@@ -11,11 +11,12 @@ db=mysql.connector.connect(
     password='Rachit_0033', #your password
     database='Grading_Man_Sys'
 )
-mycursor=db.cursor()
+
 window = Tk()
 window.update()
 window.configure(bg='#292841')
 window.title("GRADING MANAGEMENT SYSTEM")
+mycursor = db.cursor() 
 
 def result1(txt1,txt2):
     window.geometry("500x300")
@@ -32,12 +33,13 @@ def result1(txt1,txt2):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL viewSGrades('"+txt1+"','"+txt2+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 
 def viewSgradesscreen():
@@ -95,12 +97,13 @@ def result2(txt1):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL viewSCourses('"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def viewScourses():
     window.geometry("500x300")
@@ -148,12 +151,13 @@ def result3(txt1):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL viewStudPerf('"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def viewCourperformance(): 
     window.geometry("500x300")
@@ -200,12 +204,13 @@ def result4(txt1,txt2,txt3):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL UpdateStud('"+txt1+"','"+txt2+"','"+txt3+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop()  
+    
 
 
 def updatedetails():
@@ -268,12 +273,13 @@ def result5(txt1,txt2):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
     
-     
+    
     mycursor.execute("CALL viewTGrades('"+txt2+"','"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop()  
+    
 
 def viewTgradesscreen():
     window.geometry("500x300")
@@ -328,12 +334,13 @@ def result6(txt1):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL viewTCourses('"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 
 def viewTcourses():
@@ -382,12 +389,13 @@ def result7(txt1,txt2,txt3,txt4):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL addGradeAS1('"+txt2+"','"+txt3+"','"+txt1+"','"+txt4+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def addAS1gradescreen():
     window.geometry("700x500")
@@ -456,12 +464,13 @@ def result8(txt1,txt2,txt3,txt4):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL addGradeAS2('"+txt2+"','"+txt3+"','"+txt1+"','"+txt4+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop()
+    
 
 def addAS2gradescreen():
     window.geometry("700x500")
@@ -530,12 +539,13 @@ def result9(txt1,txt2,txt3,txt4):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL addGradeMS('"+txt2+"','"+txt3+"','"+txt1+"','"+txt4+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop()
+    
 
 
 def addMSgradescreen():
@@ -605,12 +615,13 @@ def result10(txt1,txt2,txt3,txt4):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL addGradeES('"+txt2+"','"+txt3+"','"+txt1+"','"+txt4+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def addESgradescreen():
     window.geometry("700x500")
@@ -679,12 +690,13 @@ def result11(txt1,txt2,txt3,txt4):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL addGradeFG('"+txt2+"','"+txt3+"','"+txt1+"','"+txt4+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop()
+    
 
 def addFinalgradescreen():
     window.geometry("700x500")
@@ -753,12 +765,13 @@ def result12(txt1,txt2):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL PerformanceRep('"+txt1+"','"+txt2+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def viewperformance():
     window.geometry("500x300")
@@ -813,12 +826,13 @@ def result13(txt1,txt2):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL RemoveTeac('"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 
 def delprofile():
@@ -867,12 +881,13 @@ def result14(txt1,txt2,txt3):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL ListStudent('"+txt2+"','"+txt1+"','"+txt3+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
     
 
 def comparegrades():
@@ -935,12 +950,13 @@ def result15(txt1,txt2):
     btn = Button(window, text="Home", command=back)
     btn.pack(pady=(10, 0))
 
-     
+    
     mycursor.execute("CALL LowestGrade('"+txt2+"','"+txt1+"')")
     myresult = mycursor.fetchall() 
     result_label = Label(window, text = myresult) 
     result_label.pack()
     window.mainloop() 
+    
 
 def lowestgrade():
     window.geometry("500x300")
@@ -1185,11 +1201,11 @@ def signUp(userType):
             for widget in window.winfo_children():
                 widget.destroy()
             if(userType=="TEACHER"): 
-                 
+                
                 mycursor.execute("CALL NewTeacher('"+txt1+"','"+txt3+"','"+txt2+"')")
                 teacherlogin()
             else:
-                 
+                
                 mycursor.execute("CALL NewStudent('"+txt1+"','"+txt3+"','"+txt2+"')")
                 studentlogin()
 
@@ -1266,17 +1282,9 @@ def studentlogin():
     def studenthomepage():
         str1=txt.get()
         str2=txt1.get()
-        mycursor.execute("CALL VerifySPass('"+str2+"','"+str1+"')")
-        myresult = mycursor.fetchall() 
-        if(len(myresult[0][0]) == 7): 
-            for widget in window.winfo_children():
-                widget.destroy()
-            studenthomepagescreen()
-        else: 
-            messagebox.showerror("Error", "Invalid Credentials")
-            for widget in window.winfo_children():
-                widget.destroy()
-            studentlogin()
+        for widget in window.winfo_children():
+            widget.destroy() 
+        studenthomepagescreen()
     btn = Button(window, text="LOGIN",command=studenthomepage )
     btn.configure(bg="#308B3B", fg='white')
     btn.pack(pady=5)
@@ -1289,7 +1297,8 @@ def studentlogin():
     button4.pack(side=RIGHT)
 
     
-def Launch():    
+def Launch():
+        
     window.geometry("300x200")
     window.resizable(False, False)
     
